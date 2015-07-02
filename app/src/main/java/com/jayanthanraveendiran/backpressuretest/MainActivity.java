@@ -68,12 +68,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final int count = 100; // Should be > 16 for Android & > 128 for other platforms
         findViewById(R.id.backpressure_missing).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.setEnabled(false);
                 Observable
-                        .from(getIntegerList(100))
+                        .from(getIntegerList(count))
                         .doOnSubscribe(new OnSubscribeAction())
                         .observeOn(Schedulers.io())
                         .flatMap(new FlatMapFunc())
