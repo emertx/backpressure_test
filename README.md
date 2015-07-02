@@ -1,3 +1,5 @@
+[RxJava issue #3061](https://github.com/ReactiveX/RxJava/issues/3061)
+
 Came across some weird behavior while using methods `doOnSubscribe` and `doOnUnsubscribe` of `Observable`. The reason being that those methods use operators `OperatorDoOnSubscribe` & `OperatorDoOnUnsubscribe`. 
 
 ```java
@@ -45,7 +47,7 @@ public class OperatorDoOnUnsubscribe<T> implements Operator<T, T> {
 }
 ```
 
-These operators when passed on to `lift` in `Observable`, get wrapped inside a new `Observable` which on subscription passes the incoming `Subscriber` to the provided operator and then call `onStart` of the `Subscriber`. Since essentially the above mentioned operators just return the incoming subscriber, there is a possibility of `onStart` getting called multiple times (which has the potential to mess up backpressure)
+These operators when passed on to `lift` in `Observable`, get wrapped inside a new `Observable` which on subscription passes the incoming `Subscriber` to the provided operator and then call `onStart` of the returned `Subscriber`. Since essentially the above mentioned operators just return the incoming subscriber, there is a possibility of `onStart` getting called multiple times (which has the potential to mess up backpressure)
 
 **PARTIAL CODE TO REPRODUCE**
 
